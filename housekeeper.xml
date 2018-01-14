@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configurations>
+  <Job>
+    <path>/opt/tomcat8/logs</path>
+    <filePattern>catalina*.log</filePattern>
+    <maxSize>5</maxSize>
+    <maxAgeInDays>5</maxAgeInDays>
+  </Job>
+  <Job>
+    <path>/opt/tomcat8/logs</path>
+    <filePattern>MeineLogDatei.log*</filePattern>
+    <maxSize>5</maxSize>
+    <maxAgeInDays>10</maxAgeInDays>
+  </Job>
+  <Job>
+    <path>/opt/tomcat8/logs</path>
+    <filePattern>manager.*.log</filePattern>
+    <maxSize>5</maxSize>
+    <maxAgeInDays>10</maxAgeInDays>
+  </Job>
+</configurations>
