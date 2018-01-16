@@ -13,33 +13,12 @@ import java.util.GregorianCalendar;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-public class TestBasicWorkflow {
+import de.kreth.loghousekeeper.jobtypes.DeleteJob;
 
-	private File dir;
-	private Loghousekeeper keeper;
+public class TestBasicWorkflow extends AbstractFilesystemTests {
 
-	@Before
-	public void createTestDir() throws IOException {
-		dir = new File(FileUtils.getTempDirectory(), getClass().getSimpleName());
-		assertFalse(dir.exists());
-		FileUtils.forceMkdir(dir);
-
-		assertTrue(dir.exists());
-		assertTrue(dir.isDirectory());
-
-		keeper = new Loghousekeeper();
-	}
-	
-	@After
-	public void deleteTestDir() throws IOException {
-		FileUtils.deleteDirectory(dir);
-		assertFalse(dir.exists());
-	}
-	
 	@Test
 	public void testDeleteOlder() throws IOException {
 		String filename = "fileTodelete.log";
@@ -52,8 +31,8 @@ public class TestBasicWorkflow {
 		timeLimit.add(Calendar.DAY_OF_MONTH, -5);
 
 		toDelete.setLastModified(timeLimit.getTime().getTime());
-		Job job = new Job(new File("."), filename, 5, 3);
-		keeper.delete(job);
+		DeleteJob job = new DeleteJob(new File("."), filename, 5, 3);
+		job.run();
 		assertFalse(toDelete.exists());
 	}
 
@@ -69,9 +48,9 @@ public class TestBasicWorkflow {
 		Collection<File> created = FileUtils.listFiles(dir, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
 		assertEquals(10, created.size());
 
-		Job job = new Job(dir, "*.log", 5, 5);
+		DeleteJob job = new DeleteJob(dir, "*.log", 5, 5);
 		assertEquals(10, job.listFiles().size());
-		keeper.delete(job);
+		job.run();
 
 		Collection<File> remaining = FileUtils.listFiles(dir, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
 		assertEquals(5, remaining.size());
@@ -79,7 +58,7 @@ public class TestBasicWorkflow {
 	
 	@Test
 	public void testList() {
-		Job job = new Job(new File("."), "*", 5, 3);
+		DeleteJob job = new DeleteJob(new File("."), "*", 5, 3);
 		Collection<File> files = job.listFiles();
 		assertFalse(files.isEmpty());
 	}
