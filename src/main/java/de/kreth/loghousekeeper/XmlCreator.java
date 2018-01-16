@@ -19,7 +19,7 @@ public class XmlCreator {
       File xml = new File("housekeeper.xml");
       Document doc = getDocument(xml);
 
-//      job.appendTo(doc.getRootElement());
+      job.appendTo(doc.getRootElement());
 
       Element root = doc.getRootElement();
 
