@@ -13,6 +13,8 @@ public class Configuration {
 	private final static Logger logger = LoggerFactory.getLogger(Configuration.class);
 	
 	private final List<AbstractJob> jobs = new ArrayList<>();
+
+   private Properties mailProperties;
 	
 	public Collection<AbstractJob> getJobs() {
 		return jobs;
@@ -22,24 +24,37 @@ public class Configuration {
 		Element root = xmlConfig.getRootElement();
 		List<Element> list = root.elements();
 		Configuration config = new Configuration();
+
+		config.mailProperties = new Properties();
 		
-		for(Element e: list) {		   
-			config.jobs.add(AbstractJob.parse(e));
+		for(Element e: list) {
+		   if(e.getName().equals("mail_properties")) {
+		      parseEntriesToProps(e, config.mailProperties);
+		   } else {
+		      config.jobs.add(AbstractJob.parse(e));
+		   }
 		}
+		
 		if(logger.isInfoEnabled()) {
 		   logger.info("Found " + config.jobs.size() + " jobs in configuration file");
 		}
 		return config;
 	}
 	
-	public Properties getMailProperties() {
-	    Properties props = new Properties();
-	    props.put("mail.smtp.host", "smtp.web.de");
-       props.put("mail.smtp.port", "587");
-       
-	    props.put("mail.smtp.auth", "true");
-	    props.put("mail.smtp.starttls.enable", "true");
-	    
-	    return props;
+	private static void parseEntriesToProps(Element e, Properties mailProperties2) {
+	   for (Element entry: e.elements("entry")) {
+	      
+            String key = entry.attribute("key").getText();
+            if(key.contains("password")) {
+               mailProperties2.put(key, entry.getText());
+            } else {
+               mailProperties2.put(key, entry.getText());
+            }
+         
+	   }
+   }
+
+   public Properties getMailProperties() {
+	    return mailProperties;
 	}
 }

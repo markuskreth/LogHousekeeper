@@ -1,6 +1,7 @@
 package de.kreth.loghousekeeper;
 
 import java.io.*;
+import java.util.Properties;
 
 import org.dom4j.*;
 import org.dom4j.io.OutputFormat;
@@ -18,8 +19,20 @@ public class XmlCreator {
       File xml = new File("housekeeper.xml");
       Document doc = getDocument(xml);
 
-      job.appendTo(doc.getRootElement());
+//      job.appendTo(doc.getRootElement());
 
+      Element root = doc.getRootElement();
+
+      Properties mailProperties = new Properties();
+      mailProperties.put("mail.smtp.host", "smtp.web.de");
+      mailProperties.put("mail.smtp.port", "587");
+      mailProperties.put("mail.smtp.auth", "true");
+      mailProperties.put("mail.smtp.starttls.enable", "true");
+      ByteArrayOutputStream out = new ByteArrayOutputStream();
+      mailProperties.storeToXML(out, null);
+      ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+      SAXReader reader = new SAXReader();
+      root.add(reader.read(in).getRootElement());
       writeDoc(xml, doc);
    }
 
@@ -43,7 +56,7 @@ public class XmlCreator {
       } else {
          DocumentFactory df = DocumentFactory.getInstance();
          doc = df.createDocument("UTF-8");
-         doc.setRootElement(df.createElement("configurations"));
+//         doc.setRootElement(df.createElement("configurations"));
       }
       return doc;
    }

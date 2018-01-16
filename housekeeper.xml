@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<configurations>
-  <de.kreth.loghousekeeper.jobtypes.DeleteJob>
-    <path>/opt/tomcat8/logs</path>
-    <filePattern>catalina*.log</filePattern>
-    <maxSize>5</maxSize>
-    <maxAgeInDays>5</maxAgeInDays>
+<configurations> 
+  <de.kreth.loghousekeeper.jobtypes.DeleteJob> 
+    <path>/opt/tomcat8/logs</path>  
+    <filePattern>catalina*.log</filePattern>  
+    <maxSize>5</maxSize>  
+    <maxAgeInDays>5</maxAgeInDays> 
+  </de.kreth.loghousekeeper.jobtypes.DeleteJob>  
+  <de.kreth.loghousekeeper.jobtypes.DeleteJob> 
+    <path>/opt/tomcat8/logs</path>  
+    <filePattern>MeineLogDatei.log*</filePattern>  
+    <maxSize>5</maxSize>  
+    <maxAgeInDays>10</maxAgeInDays> 
+  </de.kreth.loghousekeeper.jobtypes.DeleteJob>  
+  <de.kreth.loghousekeeper.jobtypes.DeleteJob> 
+    <path>/opt/tomcat8/logs</path>  
+    <filePattern>manager.*.log</filePattern>  
+    <maxSize>5</maxSize>  
+    <maxAgeInDays>10</maxAgeInDays> 
   </de.kreth.loghousekeeper.jobtypes.DeleteJob>
-  <de.kreth.loghousekeeper.jobtypes.DeleteJob>
-    <path>/opt/tomcat8/logs</path>
-    <filePattern>MeineLogDatei.log*</filePattern>
-    <maxSize>5</maxSize>
-    <maxAgeInDays>10</maxAgeInDays>
-  </de.kreth.loghousekeeper.jobtypes.DeleteJob>
-  <de.kreth.loghousekeeper.jobtypes.DeleteJob>
-    <path>/opt/tomcat8/logs</path>
-    <filePattern>manager.*.log</filePattern>
-    <maxSize>5</maxSize>
-    <maxAgeInDays>10</maxAgeInDays>
-  </de.kreth.loghousekeeper.jobtypes.DeleteJob>
+  <mail_properties>
+    <entry key="mail.smtp.starttls.enable">true</entry>
+    <entry key="mail.smtp.port">587</entry>
+    <entry key="mail.smtp.auth">true</entry>
+    <entry key="mail.smtp.host">smtp.web.de</entry>
+  </mail_properties>
 </configurations>
