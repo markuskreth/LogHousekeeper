@@ -17,10 +17,11 @@ public class Loghousekeeper {
 	public static void main(String[] args) throws DocumentException {
 		SAXReader saxBuilder = new SAXReader();
 		Document xmlConfig = saxBuilder.read(new File(args[0]));
+		
 		Configuration conf = Configuration.from(xmlConfig);
-		Loghousekeeper keeper = new Loghousekeeper();
+		
 		if(logger.isInfoEnabled()) {
-			logger.info("Running " + keeper.getClass().getSimpleName() 
+			logger.info("Running " + Loghousekeeper.class.getSimpleName() 
 					+ " with " + conf.getJobs().size() + " jobs");
 		}
 		for (Runnable j: conf.getJobs()) {

@@ -23,7 +23,7 @@ public class SendMail implements Reaction {
 
    private String user;
 
-   public SendMail(Configuration config) {
+   public void init(Configuration config) {
       mailProperties = config.getMailProperties();
       String password = mailProperties.getProperty("mail.password");
       user = mailProperties.getProperty("mail.user");
@@ -71,7 +71,7 @@ public class SendMail implements Reaction {
          MimeMessage msg = prepareMail(cause);
          
          StringBuilder text = new StringBuilder("Warning!\n");
-         text.append(f.getAbsolutePath()).append(" is ").append(Arrays.toString(cause));
+         text.append(f.getAbsolutePath()).append(Arrays.toString(cause));
          msg.setText(text.toString());
          
          Transport.send(msg);

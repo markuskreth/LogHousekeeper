@@ -12,7 +12,6 @@ public class CheckSizeJob extends AbstractJob {
    private List<File> files;
    private long warnSize;
    
-   
    public CheckSizeJob(List<File> files, long warnSize) {
       super();
       this.files = files;
@@ -41,18 +40,19 @@ public class CheckSizeJob extends AbstractJob {
       }
       for(File f: files) {
          if(FileUtils.sizeOf(f) > warnSize) {
-            react(f);
+            react(f, " has size " + FileUtils.sizeOf(f) + " bytes", "allowed are " + warnSize);
          }
       }
    }
 
    @Override
-   public void appendTo(Element root) {
+   protected Element createDetailedElementIn(Element root) {
       Element el = root.addElement(getClass().getName());
       el.addElement("warnSize").setText(Long.toString(warnSize));
       for(File f: files) {
          el.addElement("file").setText(f.getAbsolutePath());
       }
+      return el;
    }
 
 }

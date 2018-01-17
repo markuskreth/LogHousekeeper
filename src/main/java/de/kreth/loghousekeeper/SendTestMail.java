@@ -16,7 +16,8 @@ public class SendTestMail {
       Document xmlConfig = saxBuilder.read(new File("housekeeper.xml"));
       Configuration conf = Configuration.from(xmlConfig);
       
-      SendMail m = new SendMail(conf);
+      SendMail m = new SendMail();
+      m.init(conf);
       m.react(new File("."), "Testmail");
 
    }

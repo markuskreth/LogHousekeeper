@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import de.kreth.loghousekeeper.jobtypes.AbstractJob;
 import de.kreth.loghousekeeper.mail.Encrytion;
+import de.kreth.loghousekeeper.mail.SendMail;
 
 public class Configuration {
 
@@ -28,20 +29,31 @@ public class Configuration {
    }
 
    public static Configuration from(Document xmlConfig) {
+      
       Element root = xmlConfig.getRootElement();
       List<Element> list = root.elements();
       Configuration config = new Configuration();
 
       config.mailProperties = new Properties();
 
+      SendMail m = new SendMail();
+      
       for (Element e : list) {
          if (e.getName().equals("mail_properties")) {
             parseEntriesToProps(e, config.mailProperties);
          } else {
-            config.jobs.add(AbstractJob.parse(e));
+            AbstractJob job = AbstractJob.parse(e);
+            for(Element react: e.element("reactions").elements("reaction")) {
+               if(SendMail.class.getName().equals(react.getText())) {
+                  job.add(m);
+               }
+            }
+            config.jobs.add(job);
          }
       }
 
+      m.init(config);
+      
       if (logger.isInfoEnabled()) {
          logger.info("Found " + config.jobs.size() + " jobs in configuration file");
       }

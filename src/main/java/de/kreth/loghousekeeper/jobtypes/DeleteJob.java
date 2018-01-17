@@ -47,12 +47,13 @@ public class DeleteJob extends AbstractJob {
    }
 
    @Override
-   public void appendTo(Element root) {
+   protected Element createDetailedElementIn(Element root) {
       Element el = root.addElement(getClass().getName());
       el.addElement("path").setText(path.getPath());
       el.addElement("filePattern").setText(filePattern);
       el.addElement("maxSize").setText(Integer.toString(maxSize));
       el.addElement("maxAgeInDays").setText(Integer.toString(maxAgeInDays));
+      return el;
    }
 
    @Override
